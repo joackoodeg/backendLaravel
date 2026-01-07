@@ -203,3 +203,29 @@ class ProductFactory extends Factory
 ```
 
 Ahora puedes usar: `Product::factory()->count(50)->create()`
+## 🔄 **FACTORIES RELACIONADAS (Relaciones entre modelos)**
+
+Cuando tienes modelos relacionados, puedes crear datos fake para ambos de forma integrada:
+
+```php
+Category::factory(15)->create()->each(function($category){
+    Product::factory(10)->create(['category_id' => $category->id]);
+});
+```
+
+**¿Qué hace?**
+- Crea **15 categorías** fake
+- Para **cada categoría**, crea **10 productos** fake
+- Asigna automáticamente el `category_id` de cada categoría a sus productos
+
+**Explicación línea por línea:**
+
+| Parte | Explicación |
+|-------|-------------|
+| `Category::factory(15)` | Inicia la creación de 15 categorías |
+| `.create()` | Guarda las 15 categorías en la BD |
+| `.each(function($category){...})` | Para cada categoría creada, ejecuta una función |
+| `Product::factory(10)` | Dentro de cada iteración, crea 10 productos |
+| `['category_id' => $category->id]` | Vincula cada producto con su categoría correspondiente |
+
+**Resultado:** 15 categorías con 10 productos cada una (150 productos totales).

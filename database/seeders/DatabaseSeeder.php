@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Category;
+use App\Models\Product;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,7 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Category::Factory(15)->create();
+        Category::Factory(15)->create()->each(function($category){
+            Product::factory(10)->create(['category_id' => $category]);
+        });
         
         /*
         // User::factory(10)->create();
